@@ -1,0 +1,6 @@
+*~
+*#
+*.o
+libs/*.a
+myftp
+server
