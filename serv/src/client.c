@@ -33,8 +33,9 @@ void client_loop(client_t *client)
 
 	while (1) {
 		input = get_input(client->control_socket);
-		if (!input)
+		if (!input || str_empty(input))
 			continue;
+		parse_input(input, client);
 	}
 }
 

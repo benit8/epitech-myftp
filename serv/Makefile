@@ -12,7 +12,9 @@ SRC_DIR	=	src/
 
 SOURCES	=	main.c			\
 		client.c		\
-		commands.c
+		commands.c		\
+		input.c			\
+		commands/pasv.c
 
 SRCS	=	$(addprefix $(SRC_DIR),$(SOURCES))
 OBJS	=	$(SRCS:.c=.o)

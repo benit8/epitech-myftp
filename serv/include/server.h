@@ -31,7 +31,7 @@ typedef struct server_ressources
 	tcp_listener_t *listener;
 	tcp_socket_t *client;
 	unsigned short port;
-	const char anonHome;
+	const char anon_home;
 } server_ressources_t;
 
 typedef struct client
@@ -44,12 +44,20 @@ typedef struct client
 typedef struct command
 {
 	char *name;
-	void (*func)(client_t *);
+	void (*func)(client_t *, char **);
 } command_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 void client(tcp_socket_t *socket);
+
+char *get_input(tcp_socket_t *control_socket);
+void parse_input(char *input, client_t *client);
+
+// Commands
+
+void unknown_command(client_t *client, char **args);
+void pasv(client_t *client, char **args);
 
 ////////////////////////////////////////////////////////////////////////////////
 

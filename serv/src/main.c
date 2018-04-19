@@ -25,7 +25,7 @@ static void sig_handler(int signum UNUSED)
 }
 
 static void init(server_ressources_t *res, unsigned short port,
-	const char *anonHome)
+	const char *anon_home)
 {
 	res->listener = tcp_listener_create();
 	if (!res->listener) {

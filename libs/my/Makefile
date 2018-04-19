@@ -41,7 +41,9 @@ Regex	=	regex/capture.c			\
 		regex/replace.c			\
 		regex/split.c
 
-String	=	string/explode.c
+String	=	string/explode.c		\
+		string/str_empty.c		\
+		string/str_trim.c
 
 
 SRCS	+=	$(addprefix $(SRC_DIR),$(Regex))
