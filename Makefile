@@ -9,7 +9,8 @@ SERVER_DIR	=	serv/
 CLIENT_DIR	=	client/
 LIBRARY_DIR	=	libs/
 
-Libraries	=	cnet
+Libraries	=	cnet	\
+			my
 
 LIBS		=	$(addprefix $(LIBRARY_DIR),$(Libraries))
 

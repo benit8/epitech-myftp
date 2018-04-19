@@ -1,39 +1,26 @@
 ##
 ## EPITECH PROJECT, 2018
-## myftp
+## libmy
 ## File description:
 ## Makefile
 ##
 
-PROJECT	=	Server
-NAME	=	../server
+PROJECT	=	my
+NAME	=	../libmy.a
 
-SRC_DIR	=	src/
+SRC_DIR	=	sources/
 
-SOURCES	=	main.c			\
-		client.c		\
-		commands.c
-
-SRCS	=	$(addprefix $(SRC_DIR),$(SOURCES))
 OBJS	=	$(SRCS:.c=.o)
 
 ################################################################################
 
+CFLAGS	+=	-Iincludes
 CFLAGS	+=	-W -Wall -Wextra
-CFLAGS	+=	-Iinclude/
-CFLAGS	+=	-I../libs/cnet/include/
-CFLAGS	+=	-I../libs/my/includes/
-
-LDFLAGS	+=	-L../libs/
-LDFLAGS	+=	-lcnet
-LDFLAGS	+=	-lmy
 
 ################################################################################
 
 SHELL	=	/bin/bash
 PRINT	=	printf "$(PROJECT):\t" ; printf
-RM	=	rm -f
-CC	=	gcc
 
 RESET	=	\033[0m
 RED	=	\033[0;31m
@@ -45,6 +32,24 @@ CYAN	=	\033[1;36m
 
 ################################################################################
 
+# ---------------------------------------------------------------------------- #
+#  Modules                                                                     #
+# ---------------------------------------------------------------------------- #
+
+Regex	=	regex/capture.c			\
+		regex/match.c			\
+		regex/replace.c			\
+		regex/split.c
+
+String	=	string/explode.c
+
+
+SRCS	+=	$(addprefix $(SRC_DIR),$(Regex))
+SRCS	+=	$(addprefix $(SRC_DIR),$(String))
+
+
+################################################################################
+
 all: $(NAME)
 
 debug: CFLAGS += -g3
@@ -52,7 +57,7 @@ debug: $(NAME)
 
 $(NAME): prebuild $(OBJS)
 	@ $(PRINT) "$(YELLOW)%b$(RESET)\n" "Building $(NAME)"
-	@ $(CC) -o $(NAME) $(OBJS) $(LDFLAGS) && \
+	@ (ar rc $(NAME) $(OBJS) && ranlib $(NAME)) && \
 	  ($(PRINT) " => $(GREEN)Done$(RESET)\n" ; exit 0) || \
 	  ($(PRINT) " => $(RED)Fail$(RESET)\n" ; exit 1)
 
@@ -77,4 +82,4 @@ de: fclean debug
 	  ($(PRINT) "  $(GREEN)[OK]$(CYAN)  %b$(RESET)\n" $<) || \
 	  ($(PRINT) "  $(RED)[XX]$(CYAN)  %b$(RESET)\n" $< ; exit 1)
 
-.PHONY: all $(NAME) prebuild clean fclean re .c.o
+.PHONY: all debug $(NAME) prebuild clean fclean re de .c.o

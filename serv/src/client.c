@@ -19,7 +19,7 @@ static char *full_address_to_string(tcp_socket_t *socket)
 	return (buffer);
 }
 
-void client_init(client *client, tcp_socket_t *socket)
+void client_init(client_t *client, tcp_socket_t *socket)
 {
 	bzero(client, sizeof(client_t));
 	client->control_socket = socket;
