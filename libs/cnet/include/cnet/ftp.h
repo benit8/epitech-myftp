@@ -81,7 +81,7 @@ typedef struct ftp_response
 
 typedef struct ftp
 {
-	tcp_socket *socket;
+	tcp_socket_t *socket;
 	char *buffer;
 } ftp_t;
 

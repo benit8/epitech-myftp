@@ -4,3 +4,4 @@
 libs/*.a
 myftp
 server
+test_ftp.sh

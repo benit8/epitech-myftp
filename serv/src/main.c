@@ -18,15 +18,15 @@ static void sig_handler(int signum UNUSED)
 {
 	server_ressources_t *res = get_server_ressources();
 
-	printf("\nBye\n");
+	printf("\n");
 	tcp_socket_destroy(res->client);
 	tcp_listener_destroy(res->listener);
 	exit(EXIT_SUCCESS);
 }
 
-static void init(server_ressources_t *res, unsigned short port,
-	const char *anon_home)
+static void init(server_ressources_t *res, unsigned short port, char *anon_home)
 {
+	res->anon_home = anon_home;
 	res->listener = tcp_listener_create();
 	if (!res->listener) {
 		fprintf(stderr, "Failed to initialize server\n");

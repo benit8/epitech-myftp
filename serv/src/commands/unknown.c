@@ -7,7 +7,12 @@
 
 #include "server.h"
 
-void unknown_commands(client_t *client, char **args UNUSED)
+void unknown_command(client_t *client, char **args UNUSED)
 {
-	send_response(client->control_socket, COMMAND_UNKNOWN, NULL);
+	send_response(client, COMMAND_UNKNOWN, NULL);
+}
+
+void not_implemented(client_t *client, char **args UNUSED)
+{
+	send_response(client, COMMAND_NOT_IMPLEMENTED, NULL);
 }

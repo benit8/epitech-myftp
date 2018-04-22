@@ -26,7 +26,7 @@ char **explode(char *original, const char *delim)
 	size_t tokens = 0;
 	char *copy = strdup(original);
 	char *c = copy;
-	char *token = strsep(&copy, delim);
+	char *token = strsep(&c, delim);
 	char **tab = calloc(1, sizeof(char *));
 
 	if (!tab)

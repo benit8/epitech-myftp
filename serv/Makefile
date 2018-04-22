@@ -14,7 +14,15 @@ SOURCES	=	main.c			\
 		client.c		\
 		commands.c		\
 		input.c			\
-		commands/pasv.c
+		response.c		\
+		status.c		\
+		commands/pass.c		\
+		commands/pasv.c		\
+		commands/pwd.c		\
+		commands/quit.c		\
+		commands/syst.c		\
+		commands/unknown.c	\
+		commands/user.c		\
 
 SRCS	=	$(addprefix $(SRC_DIR),$(SOURCES))
 OBJS	=	$(SRCS:.c=.o)

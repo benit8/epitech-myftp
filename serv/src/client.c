@@ -24,18 +24,23 @@ void client_init(client_t *client, tcp_socket_t *socket)
 	bzero(client, sizeof(client_t));
 	client->control_socket = socket;
 	client->data_socket = tcp_socket_bare();
-	client->passive = false;
+	bzero(client->name, 256);
 }
 
 void client_loop(client_t *client)
 {
 	char *input = NULL;
 
+	send_response(client, SERVICE_READY, "myFTP server");
 	while (1) {
-		input = get_input(client->control_socket);
-		if (!input || str_empty(input))
+		input = get_input(client);
+		if (!input)
+			break;
+		if (str_empty(input))
 			continue;
+		printf("[%s]\n", input);
 		parse_input(input, client);
+		free(input);
 	}
 }
 
@@ -47,6 +52,16 @@ void client(tcp_socket_t *socket)
 	client_init(&client, socket);
 	client_loop(&client);
 	printf("Disconnection %s\n", full_address_to_string(socket));
-	tcp_socket_disconnect(socket);
+	tcp_socket_destroy(client.control_socket);
+	tcp_socket_destroy(client.data_socket);
 	exit(EXIT_SUCCESS);
+}
+
+void client_disconnected(client_t *client)
+{
+	printf("Disconnection %s\n",
+		full_address_to_string(client->control_socket));
+	tcp_socket_destroy(client->control_socket);
+	tcp_socket_destroy(client->data_socket);
+	exit(EXIT_FAILURE);
 }
