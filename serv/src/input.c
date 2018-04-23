@@ -68,21 +68,23 @@ char *get_input(client_t *client)
 void parse_input(char *input, client_t *client)
 {
 	bool done = false;
-	char **args;
+	char **argv;
+	size_t argc = 0;
 
 	input = str_trim(input);
-	args = explode(input, " ");
-	if (!args)
+	argv = explode(input, " ");
+	if (!argv)
 		return;
+	for (argc = 0; argv[argc]; ++argc);
 	for (size_t i = 0; commands[i].name != NULL && !done; ++i) {
-		if (strcasecmp(commands[i].name, args[0]) == 0) {
-			(commands[i].func)(client, args);
+		if (strcasecmp(commands[i].name, argv[0]) == 0) {
+			(commands[i].func)(client, argc, argv);
 			done = true;
 		}
 	}
 	if (!done)
-		unknown_command(client, args);
-	for (size_t i = 0; args[i] != NULL; ++i)
-		free(args[i]);
-	free(args);
+		unknown_command(client, argc, argv);
+	for (size_t i = 0; argv[i] != NULL; ++i)
+		free(argv[i]);
+	free(argv);
 }

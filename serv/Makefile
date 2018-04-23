@@ -16,11 +16,18 @@ SOURCES	=	main.c			\
 		input.c			\
 		response.c		\
 		status.c		\
+		transfer.c		\
+		commands/cdup.c		\
+		commands/cwd.c		\
+		commands/list.c		\
+		commands/noop.c		\
 		commands/pass.c		\
 		commands/pasv.c		\
+		commands/port.c		\
 		commands/pwd.c		\
 		commands/quit.c		\
 		commands/syst.c		\
+		commands/type.c		\
 		commands/unknown.c	\
 		commands/user.c		\
 
@@ -57,14 +64,14 @@ CYAN	=	\033[1;36m
 
 all: $(NAME)
 
-debug: CFLAGS += -g3
+debug: CFLAGS += -g3 -D DEBUG
 debug: $(NAME)
 
 $(NAME): prebuild $(OBJS)
-	@ $(PRINT) "$(YELLOW)%b$(RESET)\n" "Building $(NAME)"
+	@ $(PRINT) "$(YELLOW)%-40b$(RESET)" "Building $(NAME)"
 	@ $(CC) -o $(NAME) $(OBJS) $(LDFLAGS) && \
-	  ($(PRINT) " => $(GREEN)Done$(RESET)\n" ; exit 0) || \
-	  ($(PRINT) " => $(RED)Fail$(RESET)\n" ; exit 1)
+	  (printf "$(GREEN)Done$(RESET)\n" ; exit 0) || \
+	  (printf "$(RED)Fail$(RESET)\n" ; exit 1)
 
 prebuild:
 	@ $(PRINT) "$(YELLOW)%b$(RESET)\n" "Compiling source files"

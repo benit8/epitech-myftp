@@ -7,12 +7,12 @@
 
 #include "server.h"
 
-void unknown_command(client_t *client, char **args UNUSED)
+void unknown_command(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 {
 	send_response(client, COMMAND_UNKNOWN, NULL);
 }
 
-void not_implemented(client_t *client, char **args UNUSED)
+void not_implemented(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 {
 	send_response(client, COMMAND_NOT_IMPLEMENTED, NULL);
 }

@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void pwd(client_t *client, char **args UNUSED)
+void pwd(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 {
 	char buff[PATH_MAX];
 

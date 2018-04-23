@@ -8,22 +8,21 @@
 #include "server.h"
 
 const command_t commands[] = {
-	{"user", &user},
-	{"pass", &pass},
-	{"cwd", &not_implemented},
-	{"cdup", &not_implemented},
-	{"quit", &quit},
+	{"cdup", &cdup},
+	{"cwd", &cwd},
 	{"dele", &not_implemented},
-	{"pwd", &pwd},
-	{"pasv", &pasv},
-	{"port", &not_implemented},
 	{"help", &not_implemented},
-	{"noop", &not_implemented},
+	{"list", &list},
+	{"noop", &noop},
+	{"pass", &pass},
+	{"pasv", &pasv},
+	{"port", &port},
+	{"pwd", &pwd},
+	{"quit", &quit},
 	{"retr", &not_implemented},
 	{"stor", &not_implemented},
-	{"list", &not_implemented},
-
 	{"syst", &syst},
-
+	{"type", &type},
+	{"user", &user},
 	{NULL, NULL}
 };

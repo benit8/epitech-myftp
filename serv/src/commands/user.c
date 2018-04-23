@@ -9,20 +9,26 @@
 
 const user_t users[] = {
 	{"anonymous", ""},
-	{"benito", "b"},
 	{NULL, NULL}
 };
 
-void user(client_t *client, char **args)
+void user(client_t *client, size_t argc, char **argv)
 {
-	if (!args[1])
+	if (argc < 2) {
 		send_response(client, NOT_LOGGED_IN, NULL);
-	for (size_t i = 0; users[i].name != NULL; ++i) {
-		if (strcasecmp(users[i].name, args[1]) == 0) {
-			strcpy(client->name, args[1]);
-			send_response(client, NEED_PASSWORD, NULL);
-			return;
-		}
+		return;
 	}
-	send_response(client, NOT_LOGGED_IN, NULL);
+	if (strcasecmp(argv[1], "anonymous") == 0) {
+		client->anon = true;
+		client->trylogin = true;
+		send_response(client, NEED_PASSWORD, NULL);
+		return;
+	}
+	client->user = getpwnam(argv[1]);
+	if (!client->user) {
+		send_response(client, NOT_LOGGED_IN, NULL);
+		return;
+	}
+	send_response(client, NEED_PASSWORD, NULL);
+	client->trylogin = true;
 }

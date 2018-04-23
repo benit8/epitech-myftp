@@ -47,10 +47,10 @@ debug: CFLAGS += -g3
 debug: $(NAME)
 
 $(NAME): prebuild $(OBJS)
-	@ $(PRINT) "$(YELLOW)%b$(RESET)\n" "Building $(NAME)"
+	@ $(PRINT) "$(YELLOW)%-40b$(RESET)" "Building $(NAME)"
 	@ $(CC) -o $(NAME) $(OBJS) $(LDFLAGS) && \
-	  ($(PRINT) " => $(GREEN)Done$(RESET)\n" ; exit 0) || \
-	  ($(PRINT) " => $(RED)Fail$(RESET)\n" ; exit 1)
+	  (printf "$(GREEN)Done$(RESET)\n" ; exit 0) || \
+	  (printf "$(RED)Fail$(RESET)\n" ; exit 1)
 
 prebuild:
 	@ $(PRINT) "$(YELLOW)%b$(RESET)\n" "Compiling source files"

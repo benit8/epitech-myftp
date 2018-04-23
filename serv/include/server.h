@@ -11,11 +11,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <limits.h>
+#include <pwd.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #include "cnet/tcp_listener.h"
@@ -41,14 +43,20 @@ typedef struct server_ressources
 typedef struct client
 {
 	tcp_socket_t *control_socket;
+	tcp_listener_t *data_listener;
 	tcp_socket_t *data_socket;
-	char name[256];
+	ip_address_t data_channel_ip;
+	unsigned short data_channel_port;
+	bool anon;
+	bool trylogin;
+	struct passwd *user;
+	bool binary;
 } client_t;
 
 typedef struct command
 {
 	char *name;
-	void (*func)(client_t *, char **);
+	void (*func)(client_t *, size_t, char **);
 } command_t;
 
 typedef struct status_string
@@ -63,7 +71,15 @@ typedef struct user
 	char *pass;
 } user_t;
 
+typedef struct transfer_type
+{
+	char *flag;
+	bool binary;
+} transfer_type_t;
+
 ////////////////////////////////////////////////////////////////////////////////
+
+server_ressources_t *get_server_ressources(void);
 
 void client(tcp_socket_t *socket);
 void client_disconnected(client_t *client);
@@ -73,19 +89,30 @@ void parse_input(char *input, client_t *client);
 
 char *ftp_status_as_strings(ftp_status_t s);
 
+bool init_data_connection(client_t *client);
 bool send_response(client_t *client, ftp_status_t status, char *fmt, ...);
 
 // Commands
 
-void unknown_command(client_t *client, char **args);
-void not_implemented(client_t *client, char **args UNUSED);
+void unknown_command(client_t *client, size_t argc, char **argv);
+void not_implemented(client_t *client, size_t argc, char **argv);
 
-void pass(client_t *client, char **args);
-void pasv(client_t *client, char **args);
-void pwd(client_t *client, char **args);
-void quit(client_t *client, char **args);
-void syst(client_t *client, char **args);
-void user(client_t *client, char **args);
+void cdup(client_t *client, size_t argc, char **args);
+void cwd(client_t *client, size_t argc, char **args);
+void dele(client_t *client, size_t argc, char **args);
+void help(client_t *client, size_t argc, char **args);
+void list(client_t *client, size_t argc, char **args);
+void noop(client_t *client, size_t argc, char **args);
+void pass(client_t *client, size_t argc, char **args);
+void pasv(client_t *client, size_t argc, char **args);
+void port(client_t *client, size_t argc, char **args);
+void pwd(client_t *client, size_t argc, char **args);
+void quit(client_t *client, size_t argc, char **args);
+void retr(client_t *client, size_t argc, char **args);
+void stor(client_t *client, size_t argc, char **args);
+void syst(client_t *client, size_t argc, char **args);
+void type(client_t *client, size_t argc, char **args);
+void user(client_t *client, size_t argc, char **args);
 
 ////////////////////////////////////////////////////////////////////////////////
 

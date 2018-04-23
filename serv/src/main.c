@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-static server_ressources_t *get_server_ressources(void)
+server_ressources_t *get_server_ressources(void)
 {
 	static server_ressources_t res;
 

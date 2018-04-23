@@ -23,8 +23,9 @@ void client_init(client_t *client, tcp_socket_t *socket)
 {
 	bzero(client, sizeof(client_t));
 	client->control_socket = socket;
+	client->data_listener = tcp_listener_bare();
 	client->data_socket = tcp_socket_bare();
-	bzero(client->name, 256);
+	client->data_channel_ip = IP_NONE;
 }
 
 void client_loop(client_t *client)
@@ -38,7 +39,9 @@ void client_loop(client_t *client)
 			break;
 		if (str_empty(input))
 			continue;
-		printf("[%s]\n", input);
+#ifdef DEBUG
+		printf("> %s\n", input);
+#endif
 		parse_input(input, client);
 		free(input);
 	}

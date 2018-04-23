@@ -19,6 +19,13 @@ static struct sockaddr_in *tcp_socket_get_local_infos(tcp_socket_t *sock)
 	return (NULL);
 }
 
+ip_address_t tcp_socket_get_local_address(tcp_socket_t *sock)
+{
+	struct sockaddr_in *address = tcp_socket_get_local_infos(sock);
+
+	return (address ? address->sin_addr.s_addr : IP_NONE);
+}
+
 unsigned short tcp_socket_get_local_port(tcp_socket_t *sock)
 {
 	struct sockaddr_in *address = tcp_socket_get_local_infos(sock);

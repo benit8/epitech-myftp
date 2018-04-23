@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void syst(client_t *client, char **args UNUSED)
+void syst(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 {
 	send_response(client, SYSTEM_TYPE, "UNIX Type: L8");
 }

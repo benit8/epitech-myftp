@@ -7,20 +7,23 @@
 
 #include "server.h"
 
-void pass(client_t *client, char **args)
+void pass(client_t *client, size_t argc UNUSED, char **argv)
 {
-	char *pass = args[1] ? args[1] : "";
+	char *pass = (argc > 1) ? argv[1] : "";
 
-	if (!client->name)
+	if (!client->trylogin)
 		send_response(client, BAD_COMMAND_SEQUENCE, NULL);
-	for (size_t i = 0; users[i].name; ++i) {
-		if (strcasecmp(users[i].name, client->name) != 0)
-			continue;
-		if (strcmp(users[i].pass, pass) == 0) {
-			send_response(client, LOGGED_IN, NULL);
-			return;
-		}
-		break;
+	client->trylogin = false;
+	if (client->anon) {
+		send_response(client, LOGGED_IN, NULL);
+		chdir(get_server_ressources()->anon_home);
+		return;
 	}
-	send_response(client, NOT_LOGGED_IN, NULL);
+	if (strcmp(pass, client->user->pw_passwd) == 0) {
+		chdir(client->user->pw_dir);
+		send_response(client, LOGGED_IN, NULL);
+	}
+	else {
+		send_response(client, NOT_LOGGED_IN, NULL);
+	}
 }

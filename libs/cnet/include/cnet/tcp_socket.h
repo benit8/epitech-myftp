@@ -52,6 +52,9 @@ tcp_socket_t *tcp_socket_create(void);
 void tcp_socket_destroy(tcp_socket_t *sock);
 
 
+// Gets the local address
+ip_address_t tcp_socket_get_local_address(tcp_socket_t *sock);
+
 // Gets the local port
 unsigned short tcp_socket_get_local_port(tcp_socket_t *sock);
 
