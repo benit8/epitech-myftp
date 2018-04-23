@@ -7,6 +7,7 @@
 
 #include "server.h"
 
-void noop(client_t *client UNUSED, size_t argc UNUSED, char **argv UNUSED)
+void noop(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 {
+	send_response(client, OK, NULL);
 }
