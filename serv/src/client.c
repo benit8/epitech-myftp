@@ -66,5 +66,6 @@ void client_disconnected(client_t *client)
 		full_address_to_string(client->control_socket));
 	tcp_socket_destroy(client->control_socket);
 	tcp_socket_destroy(client->data_socket);
+	tcp_listener_destroy(client->data_listener);
 	exit(EXIT_FAILURE);
 }

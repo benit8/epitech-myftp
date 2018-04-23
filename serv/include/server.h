@@ -17,6 +17,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -47,9 +48,11 @@ typedef struct client
 	tcp_socket_t *data_socket;
 	ip_address_t data_channel_ip;
 	unsigned short data_channel_port;
-	bool anon;
-	bool trylogin;
+	char username[32];
 	struct passwd *user;
+	bool trylogin;
+	bool anon;
+	bool logged_in;
 	bool binary;
 } client_t;
 
@@ -85,6 +88,7 @@ server_ressources_t *get_server_ressources(void);
 
 void client(tcp_socket_t *socket);
 void client_disconnected(client_t *client);
+bool client_is_logged_in(client_t *client);
 
 char *get_input(client_t *client);
 void parse_input(char *input, client_t *client);

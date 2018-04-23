@@ -29,6 +29,8 @@ void pasv(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 	socket_status_t s;
 	char *infos = NULL;
 
+	if (!client_is_logged_in(client))
+		return;
 	tcp_listener_close(client->data_listener);
 	s = tcp_listener_listen(client->data_listener, 0, 0);
 	if (s != SOCKET_DONE) {

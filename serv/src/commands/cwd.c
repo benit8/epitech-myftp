@@ -9,6 +9,8 @@
 
 void cwd(client_t *client, size_t argc, char **argv)
 {
+	if (!client_is_logged_in(client))
+		return;
 	if (argc < 2) {
 		send_response(client, PARAMETERS_UNKNOWN,
 			"Usage: CWD directory");

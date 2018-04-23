@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-void pass(client_t *client, size_t argc UNUSED, char **argv)
+void pass(client_t *client, size_t argc, char **argv)
 {
 	char *pass = (argc > 1) ? argv[1] : "";
 
@@ -16,14 +16,16 @@ void pass(client_t *client, size_t argc UNUSED, char **argv)
 	client->trylogin = false;
 	if (client->anon) {
 		send_response(client, LOGGED_IN, NULL);
+		client->logged_in = true;
 		chdir(get_server_ressources()->anon_home);
 		return;
 	}
-	if (strcmp(pass, client->user->pw_passwd) == 0) {
+	client->user = getpwnam(client->username);
+	if (client->user && strcmp(pass, client->user->pw_passwd) == 0) {
 		chdir(client->user->pw_dir);
+		client->logged_in = true;
 		send_response(client, LOGGED_IN, NULL);
+		return;
 	}
-	else {
-		send_response(client, NOT_LOGGED_IN, NULL);
-	}
+	send_response(client, NOT_LOGGED_IN, NULL);
 }

@@ -12,6 +12,8 @@ void list(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 	FILE *pp;
 	char buf[1];
 
+	if (!client_is_logged_in(client))
+		return;
 	if (!init_data_connection(client))
 		return;
 	pp = popen("ls -l", "r");

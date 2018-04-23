@@ -31,6 +31,8 @@ static void convert(client_t *client, char *data)
 
 void port(client_t *client, size_t argc, char **argv)
 {
+	if (!client_is_logged_in(client))
+		return;
 	if (argc < 2) {
 		send_response(client, PARAMETERS_UNKNOWN,
 			"Usage: PORT h1,h2,h3,h4,p1,p2");

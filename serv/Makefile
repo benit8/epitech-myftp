@@ -19,6 +19,7 @@ SOURCES	=	main.c			\
 		transfer.c		\
 		commands/cdup.c		\
 		commands/cwd.c		\
+		commands/dele.c		\
 		commands/help.c		\
 		commands/list.c		\
 		commands/noop.c		\
@@ -27,6 +28,8 @@ SOURCES	=	main.c			\
 		commands/port.c		\
 		commands/pwd.c		\
 		commands/quit.c		\
+		commands/retr.c		\
+		commands/stor.c		\
 		commands/syst.c		\
 		commands/type.c		\
 		commands/unknown.c	\
