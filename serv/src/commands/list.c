@@ -9,23 +9,18 @@
 
 void list(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 {
-	int fd_save;
-	pid_t pid;
+	FILE *pp;
+	char buf[1];
 
-	if (!init_data_connection(client)) {
-		send_response(client, DATA_CONNECTION_UNAVAILABLE, NULL);
+	if (!init_data_connection(client))
 		return;
+	pp = popen("ls -l", "r");
+	while (fread(buf, sizeof(char), 1, pp) > 0) {
+		if (*buf == '\n')
+			tcp_socket_send(client->data_socket, "\r\n", 2);
+		else
+			tcp_socket_send(client->data_socket, buf, 1);
 	}
-	send_response(client, OPENING_DATA_CONNECTION,
-		"Here comes the directory listing");
-	fd_save = dup(1);
-	dup2(client->data_socket->handle, 1);
-	pid = fork();
-	if (pid == 0)
-		execl("/bin/ls", "ls", "-l", NULL);
-	else
-		waitpid(pid, 0, WSTOPPED);
-	dup2(fd_save, 1);
-	tcp_socket_disconnect(client->data_socket);
-	send_response(client, CLOSING_DATA_CONNECTION, NULL);
+	pclose(pp);
+	close_data_connection(client);
 }

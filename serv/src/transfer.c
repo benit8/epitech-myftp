@@ -19,5 +19,12 @@ bool init_data_connection(client_t *client)
 		send_response(client, DATA_CONNECTION_UNAVAILABLE, NULL);
 		return (false);
 	}
+	send_response(client, OPENING_DATA_CONNECTION, NULL);
 	return (true);
+}
+
+void close_data_connection(client_t *client)
+{
+	tcp_socket_disconnect(client->data_socket);
+	send_response(client, CLOSING_DATA_CONNECTION, NULL);
 }

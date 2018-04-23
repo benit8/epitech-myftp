@@ -7,11 +7,6 @@
 
 #include "server.h"
 
-const user_t users[] = {
-	{"anonymous", ""},
-	{NULL, NULL}
-};
-
 void user(client_t *client, size_t argc, char **argv)
 {
 	if (argc < 2) {

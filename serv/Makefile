@@ -19,6 +19,7 @@ SOURCES	=	main.c			\
 		transfer.c		\
 		commands/cdup.c		\
 		commands/cwd.c		\
+		commands/help.c		\
 		commands/list.c		\
 		commands/noop.c		\
 		commands/pass.c		\

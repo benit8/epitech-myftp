@@ -57,6 +57,8 @@ typedef struct command
 {
 	char *name;
 	void (*func)(client_t *, size_t, char **);
+	char *usage;
+	char *help;
 } command_t;
 
 typedef struct status_string
@@ -65,17 +67,17 @@ typedef struct status_string
 	char *string;
 } status_string_t;
 
-typedef struct user
-{
-	char *name;
-	char *pass;
-} user_t;
-
 typedef struct transfer_type
 {
 	char *flag;
 	bool binary;
 } transfer_type_t;
+
+typedef struct pair
+{
+	char *first;
+	char *second;
+} pair_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -90,6 +92,7 @@ void parse_input(char *input, client_t *client);
 char *ftp_status_as_strings(ftp_status_t s);
 
 bool init_data_connection(client_t *client);
+void close_data_connection(client_t *client);
 bool send_response(client_t *client, ftp_status_t status, char *fmt, ...);
 
 // Commands
@@ -118,4 +121,4 @@ void user(client_t *client, size_t argc, char **args);
 
 extern const command_t commands[];
 extern const status_string_t status_strings[];
-extern const user_t users[];
+extern const size_t command_count;
