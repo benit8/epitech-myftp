@@ -17,6 +17,5 @@ void user(client_t *client, size_t argc, char **argv)
 		client->anon = true;
 	else
 		strcpy(client->username, argv[1]);
-	client->trylogin = true;
 	send_response(client, NEED_PASSWORD, NULL);
 }

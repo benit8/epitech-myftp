@@ -40,7 +40,7 @@ void client_loop(client_t *client)
 		if (str_empty(input))
 			continue;
 #ifdef DEBUG
-		printf("> %s\n", input);
+		printf("%40s%s\n", " ", input);
 #endif
 		parse_input(input, client);
 		free(input);
@@ -51,10 +51,10 @@ void client(tcp_socket_t *socket)
 {
 	client_t client;
 
-	printf("Connection from %s\n", full_address_to_string(socket));
+	printf("-- Connection from %s\n", full_address_to_string(socket));
 	client_init(&client, socket);
 	client_loop(&client);
-	printf("Disconnection %s\n", full_address_to_string(socket));
+	printf("-- Disconnection %s\n", full_address_to_string(socket));
 	tcp_socket_destroy(client.control_socket);
 	tcp_socket_destroy(client.data_socket);
 	exit(EXIT_SUCCESS);
@@ -62,7 +62,7 @@ void client(tcp_socket_t *socket)
 
 void client_disconnected(client_t *client)
 {
-	printf("Disconnection %s\n",
+	printf("-- Disconnection %s\n",
 		full_address_to_string(client->control_socket));
 	tcp_socket_destroy(client->control_socket);
 	tcp_socket_destroy(client->data_socket);

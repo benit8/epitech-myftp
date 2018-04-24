@@ -35,7 +35,7 @@ void retr(client_t *client, size_t argc, char **argv)
 		send_response(client, PARAMETERS_UNKNOWN, "Usage: RETR file");
 		return;
 	}
-	if (!init_data_connection(client))
+	if (!init_data_channel(client))
 		return;
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0 || (fstat(fd, &buf) == -1 || !S_ISREG(buf.st_mode))) {
@@ -43,8 +43,5 @@ void retr(client_t *client, size_t argc, char **argv)
 			strerror(errno));
 		return;
 	}
-	if (!send_file(client, fd))
-		return;
-	close_data_connection(client);
-	send_response(client, FILE_ACTION_OK, NULL);
+	close_data_channel(client, send_file(client, fd));
 }

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** ftp / server
 ** File description:
-** commands / stor.c
+** commands / appe.c
 */
 
 #include "server.h"
@@ -41,7 +41,7 @@ static bool receive_file(client_t *client, int fd)
 	return (sync_file(client, fd, ok));
 }
 
-void stor(client_t *client, size_t argc, char **argv)
+void appe(client_t *client, size_t argc, char **argv)
 {
 	if (!client_is_logged_in(client))
 		return;
@@ -51,7 +51,7 @@ void stor(client_t *client, size_t argc, char **argv)
 	}
 	if (!init_data_channel(client))
 		return;
-	int fd = open(argv[1], O_WRONLY | O_CREAT, 644);
+	int fd = open(argv[1], O_WRONLY | O_APPEND | O_CREAT, 644);
 	if (fd < 0) {
 		send_response(client, FILE_UNAVAILABLE, "%s: %s", argv[1],
 			strerror(errno));

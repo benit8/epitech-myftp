@@ -31,14 +31,14 @@ void pasv(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 
 	if (!client_is_logged_in(client))
 		return;
-	tcp_listener_close(client->data_listener);
 	s = tcp_listener_listen(client->data_listener, 0, 0);
 	if (s != SOCKET_DONE) {
 		send_response(client, DATA_CONNECTION_UNAVAILABLE, NULL);
 		return;
 	}
 	infos = make_infos(client);
-	send_response(client, ENTERING_PASSIVE_MODE, "(%s)", infos);
+	send_response(client, ENTERING_PASSIVE_MODE,
+		"Entering passive mode (%s)", infos);
 	free(infos);
 	s = tcp_listener_accept(client->data_listener, &client->data_socket);
 	if (s != SOCKET_DONE) {

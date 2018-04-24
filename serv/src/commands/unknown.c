@@ -16,3 +16,8 @@ void not_implemented(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 {
 	send_response(client, COMMAND_NOT_IMPLEMENTED, NULL);
 }
+
+void obsolete(client_t *client, size_t argc UNUSED, char **argv UNUSED)
+{
+	send_response(client, POINTLESS_COMMAND, NULL);
+}

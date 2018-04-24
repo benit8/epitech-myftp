@@ -50,10 +50,11 @@ typedef struct client
 	unsigned short data_channel_port;
 	char username[32];
 	struct passwd *user;
-	bool trylogin;
 	bool anon;
 	bool logged_in;
 	bool binary;
+	char last_command[256];
+	char to_rename[PATH_MAX];
 } client_t;
 
 typedef struct command
@@ -95,20 +96,25 @@ void parse_input(char *input, client_t *client);
 
 char *ftp_status_as_strings(ftp_status_t s);
 
-bool init_data_connection(client_t *client);
-void close_data_connection(client_t *client);
+bool init_data_channel(client_t *client);
+void close_data_channel(client_t *client, bool ok);
 bool send_response(client_t *client, ftp_status_t status, char *fmt, ...);
 
 // Commands
 
 void unknown_command(client_t *client, size_t argc, char **argv);
 void not_implemented(client_t *client, size_t argc, char **argv);
+void obsolete(client_t *client, size_t argc, char **argv);
 
+void allo(client_t *client, size_t argc, char **args);
+void appe(client_t *client, size_t argc, char **args);
 void cdup(client_t *client, size_t argc, char **args);
 void cwd(client_t *client, size_t argc, char **args);
 void dele(client_t *client, size_t argc, char **args);
 void help(client_t *client, size_t argc, char **args);
 void list(client_t *client, size_t argc, char **args);
+void mkd(client_t *client, size_t argc, char **args);
+void mode(client_t *client, size_t argc, char **args);
 void noop(client_t *client, size_t argc, char **args);
 void pass(client_t *client, size_t argc, char **args);
 void pasv(client_t *client, size_t argc, char **args);
@@ -116,7 +122,11 @@ void port(client_t *client, size_t argc, char **args);
 void pwd(client_t *client, size_t argc, char **args);
 void quit(client_t *client, size_t argc, char **args);
 void retr(client_t *client, size_t argc, char **args);
+void rmd(client_t *client, size_t argc, char **args);
+void rnfr(client_t *client, size_t argc, char **args);
+void rnto(client_t *client, size_t argc, char **args);
 void stor(client_t *client, size_t argc, char **args);
+void stru(client_t *client, size_t argc, char **args);
 void syst(client_t *client, size_t argc, char **args);
 void type(client_t *client, size_t argc, char **args);
 void user(client_t *client, size_t argc, char **args);

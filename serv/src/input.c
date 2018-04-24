@@ -84,6 +84,7 @@ void parse_input(char *input, client_t *client)
 	}
 	if (!done)
 		unknown_command(client, argc, argv);
+	strcpy(client->last_command, argv[0]);
 	for (size_t i = 0; argv[i] != NULL; ++i)
 		free(argv[i]);
 	free(argv);

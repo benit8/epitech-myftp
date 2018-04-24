@@ -39,7 +39,7 @@ bool send_response(client_t *client, ftp_status_t status, char *fmt, ...)
 		exit(84);
 	}
 #ifdef DEBUG
-	printf("< %s", buffer);
+	printf("%s", buffer);
 #endif
 	return (finish_response(client, buffer, fmt, msg));
 }

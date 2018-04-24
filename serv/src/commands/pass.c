@@ -11,9 +11,10 @@ void pass(client_t *client, size_t argc, char **argv)
 {
 	char *pass = (argc > 1) ? argv[1] : "";
 
-	if (!client->trylogin)
+	if (strcasecmp(client->last_command, "user") != 0) {
 		send_response(client, BAD_COMMAND_SEQUENCE, NULL);
-	client->trylogin = false;
+		return;
+	}
 	if (client->anon) {
 		send_response(client, LOGGED_IN, NULL);
 		client->logged_in = true;

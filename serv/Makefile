@@ -12,16 +12,19 @@ SRC_DIR	=	src/
 
 SOURCES	=	main.c			\
 		client.c		\
+		data_channel.c		\
 		commands.c		\
 		input.c			\
 		response.c		\
 		status.c		\
-		transfer.c		\
+		commands/appe.c		\
 		commands/cdup.c		\
 		commands/cwd.c		\
 		commands/dele.c		\
 		commands/help.c		\
 		commands/list.c		\
+		commands/mkd.c		\
+		commands/mode.c		\
 		commands/noop.c		\
 		commands/pass.c		\
 		commands/pasv.c		\
@@ -29,7 +32,11 @@ SOURCES	=	main.c			\
 		commands/pwd.c		\
 		commands/quit.c		\
 		commands/retr.c		\
+		commands/rmd.c		\
+		commands/rnfr.c		\
+		commands/rnto.c		\
 		commands/stor.c		\
+		commands/stru.c		\
 		commands/syst.c		\
 		commands/type.c		\
 		commands/unknown.c	\
