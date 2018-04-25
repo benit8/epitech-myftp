@@ -13,12 +13,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef enum ftp_transfer_mode
-{
-	BINARY,
-	ASCII
-} ftp_transfer_mode_t;
-
 typedef enum ftp_status
 {
 	RESTART_MARKER_REPLY		= 110,
@@ -70,41 +64,3 @@ typedef enum ftp_status
 	CONNECTION_CLOSED		= 1002,
 	INVALID_FILE			= 1003
 } ftp_status_t;
-
-////////////////////////////////////////////////////////////////////////////////
-
-typedef struct ftp_response
-{
-	ftp_status_t status;
-	char *message;
-} ftp_response_t;
-
-typedef struct ftp
-{
-	tcp_socket_t *socket;
-	char *buffer;
-} ftp_t;
-
-////////////////////////////////////////////////////////////////////////////////
-
-void ftp_response_destroy(ftp_response_t *res);
-bool ftp_response_is_ok(const ftp_response_t *res);
-
-
-ftp_t *ftp_create(void);
-void ftp_destroy(ftp_t *ftp);
-
-ftp_response_t *ftp_connect(ftp_t *ftp, ip_address_t server,
-	unsigned short port, int timeout);
-ftp_response_t *ftp_login(ftp_t *ftp, const char *name, const char *password);
-ftp_response_t *ftp_login_anonymous(ftp_t *ftp);
-ftp_response_t *ftp_disconnect(ftp_t *ftp);
-ftp_response_t *ftp_keep_alive(ftp_t *ftp);
-
-ftp_response_t *ftp_download(ftp_t *ftp, const char *remote_file,
-	const char *local_path, ftp_transfer_mode_t mode);
-ftp_response_t *ftp_upload(ftp_t *ftp, const char *local_file,
-	const char *remote_path, ftp_transfer_mode_t mode);
-
-ftp_response_t *ftp_send_command(ftp_t *ftp, const char *command,
-	const char *parameter);

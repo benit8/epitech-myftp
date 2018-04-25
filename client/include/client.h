@@ -31,18 +31,78 @@
 
 #define UNUSED __attribute__((unused))
 
+#define DEFAULT_PROMPT "myftp>"
+
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct client
+typedef struct data
 {
 	tcp_socket_t *control_socket;
-	ip_address_t control_channel_ip;
-	unsigned short control_channel_port;
+	ip_address_t control_ip;
+	unsigned short control_port;
 
 	tcp_socket_t *data_socket;
 	tcp_listener_t *data_listener;
-	ip_address_t data_channel_ip;
-	unsigned short data_channel_port;
+	ip_address_t data_ip;
+	unsigned short data_port;
 
 	bool passive;
-} client_t;
+} data_t;
+
+typedef struct command
+{
+	char *name;
+	bool (*func)(data_t *, size_t, char **);
+	char *help;
+} command_t;
+
+typedef struct response
+{
+	int code;
+	char *message;
+} response_t;
+
+typedef struct pair
+{
+	char *first;
+	char *second;
+} pair_t;
+
+////////////////////////////////////////////////////////////////////////////////
+
+char *prompt(char *custom_prompt);
+
+int exec_command(data_t *data, char *input);
+void send_command(data_t *data, char *fmt, ...);
+
+response_t *get_response(data_t *data);
+void response_destroy(response_t *res);
+
+bool ftp_append(data_t *data, size_t argc, char **argv);
+bool ftp_ascii(data_t *data, size_t argc, char **argv);
+bool ftp_binary(data_t *data, size_t argc, char **argv);
+bool ftp_cd(data_t *data, size_t argc, char **argv);
+bool ftp_cdup(data_t *data, size_t argc, char **argv);
+bool ftp_debug(data_t *data, size_t argc, char **argv);
+bool ftp_delete(data_t *data, size_t argc, char **argv);
+bool ftp_disconnect(data_t *data, size_t argc, char **argv);
+bool ftp_exit(data_t *data, size_t argc, char **argv);
+bool ftp_help(data_t *data, size_t argc, char **argv);
+bool ftp_lcd(data_t *data, size_t argc, char **argv);
+bool ftp_list(data_t *data, size_t argc, char **argv);
+bool ftp_mkdir(data_t *data, size_t argc, char **argv);
+bool ftp_noop(data_t *data, size_t argc, char **argv);
+bool ftp_open(data_t *data, size_t argc, char **argv);
+bool ftp_passive(data_t *data, size_t argc, char **argv);
+bool ftp_pwd(data_t *data, size_t argc, char **argv);
+bool ftp_quote(data_t *data, size_t argc, char **argv);
+bool ftp_recv(data_t *data, size_t argc, char **argv);
+bool ftp_rename(data_t *data, size_t argc, char **argv);
+bool ftp_rmdir(data_t *data, size_t argc, char **argv);
+bool ftp_send(data_t *data, size_t argc, char **argv);
+
+////////////////////////////////////////////////////////////////////////////////
+
+extern const command_t commands[];
+extern const size_t command_count;
+extern const pair_t aliases[];

@@ -13,6 +13,8 @@ bool str_empty(const char *string)
 
 	if (!s)
 		return (true);
+	else if (*s == '\0')
+		return (true);
 	for (; *s != '\0'; ++s) {
 		if (!isblank(*s))
 			return (false);

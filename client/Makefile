@@ -10,7 +10,32 @@ NAME	=	../myftp
 
 SRC_DIR	=	src/
 
-SOURCES	=	main.c
+SOURCES	=	main.c			\
+		commands.c		\
+		prompt.c		\
+		response.c		\
+		commands/append.c	\
+		commands/ascii.c	\
+		commands/binary.c	\
+		commands/cd.c		\
+		commands/cdup.c		\
+		commands/debug.c	\
+		commands/delete.c	\
+		commands/disconnect.c	\
+		commands/exit.c		\
+		commands/help.c		\
+		commands/lcd.c		\
+		commands/list.c		\
+		commands/mkdir.c	\
+		commands/noop.c		\
+		commands/open.c		\
+		commands/passive.c	\
+		commands/pwd.c		\
+		commands/quote.c	\
+		commands/recv.c		\
+		commands/rename.c	\
+		commands/rmdir.c	\
+		commands/send.c
 
 SRCS	=	$(addprefix $(SRC_DIR),$(SOURCES))
 OBJS	=	$(SRCS:.c=.o)
@@ -20,9 +45,11 @@ OBJS	=	$(SRCS:.c=.o)
 CFLAGS	+=	-W -Wall -Wextra
 CFLAGS	+=	-Iinclude/
 CFLAGS	+=	-I../libs/cnet/include/
+CFLAGS	+=	-I../libs/my/includes/
 
 LDFLAGS	+=	-L../libs/
 LDFLAGS	+=	-lcnet
+LDFLAGS	+=	-lmy
 
 ################################################################################
 
@@ -44,6 +71,7 @@ CYAN	=	\033[1;36m
 all: $(NAME)
 
 debug: CFLAGS += -g3
+debug: CFLAGS += -DDEBUG
 debug: $(NAME)
 
 $(NAME): prebuild $(OBJS)
