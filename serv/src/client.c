@@ -37,8 +37,10 @@ void client_loop(client_t *client)
 		input = get_input(client);
 		if (!input)
 			break;
-		if (str_empty(input))
+		if (str_empty(input)) {
+			unknown_command(client, 0, NULL);
 			continue;
+		}
 #ifdef DEBUG
 		printf("%40s%s\n", " ", input);
 #endif

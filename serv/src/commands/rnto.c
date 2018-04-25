@@ -7,6 +7,17 @@
 
 #include "server.h"
 
+static void rnto_2(client_t *client, char *new_name)
+{
+	if (rename(client->to_rename, new_name) == -1) {
+		send_response(client, FILENAME_NOT_ALLOWED, "%s: %s",
+			client->to_rename, strerror(errno));
+		return;
+	}
+	send_response(client, FILE_ACTION_OK, NULL);
+	bzero(client->to_rename, PATH_MAX);
+}
+
 void rnto(client_t *client, size_t argc, char **argv)
 {
 	if (!client_is_logged_in(client))
@@ -24,11 +35,5 @@ void rnto(client_t *client, size_t argc, char **argv)
 			client->to_rename, strerror(errno));
 		return;
 	}
-	if (rename(client->to_rename, argv[1]) == -1) {
-		send_response(client, FILENAME_NOT_ALLOWED, "%s: %s",
-			client->to_rename, strerror(errno));
-		return;
-	}
-	send_response(client, FILE_ACTION_OK, NULL);
-	bzero(client->to_rename, PATH_MAX);
+	rnto_2(client, argv[1]);
 }
