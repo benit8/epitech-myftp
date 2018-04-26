@@ -24,7 +24,7 @@ int ftp_cd(data_t *data, size_t argc, char **argv)
 			return (2);
 		}
 	}
-	send_command(data, "CWD %s" ,cmd);
+	send_command(data, "CWD %s", cmd);
 	free(cmd);
 	return (response_wait(data, true));
 }

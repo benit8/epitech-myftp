@@ -7,7 +7,10 @@
 
 #include "client.h"
 
-int ftp_cdup(data_t *data UNUSED, size_t argc UNUSED, char **argv UNUSED)
+int ftp_cdup(data_t *data, size_t argc UNUSED, char **argv UNUSED)
 {
-	return (0);
+	if (!connected(data))
+		return (2);
+	send_command(data, "CDUP");
+	return (response_wait(data, true));
 }

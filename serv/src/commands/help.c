@@ -28,7 +28,7 @@ static void one_command(client_t *client, char *cmd)
 	if (!commands[i].name)
 		send_response(client, HELP_MESSAGE, "%s: Invalid command", cmd);
 	else {
-		send_response(client, HELP_MESSAGE, "%s\r\n%s",
+		send_response(client, HELP_MESSAGE, "%s: %s",
 			commands[i].usage, commands[i].help);
 	}
 }
