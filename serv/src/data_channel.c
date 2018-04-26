@@ -17,7 +17,7 @@ bool init_data_channel(client_t *client)
 	}
 	else if (client->data_channel_ip == IP_NONE ||
 		client->data_channel_port == 0) {
-		send_response(client, BAD_COMMAND_SEQUENCE, NULL);
+		send_response(client, DATA_CONNECTION_UNAVAILABLE, NULL);
 		return (false);
 	}
 	s = tcp_socket_connect(client->data_socket, client->data_channel_ip,

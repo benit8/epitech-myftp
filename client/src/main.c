@@ -73,5 +73,8 @@ int main(int argc, char **argv)
 	data.data_socket = tcp_socket_bare();
 	data.data_ip = IP_NONE;
 	data.data_port = 0;
+	data.passive = false;
+	data.debug = 0;
+	data.transfer_mode = BINARY;
 	return (launch(&data, argc, argv));
 }

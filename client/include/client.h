@@ -48,6 +48,7 @@ typedef struct data
 
 	bool passive;
 	int debug;
+	ftp_transfer_mode_t transfer_mode;
 } data_t;
 
 typedef struct command
@@ -76,6 +77,7 @@ char *prompt_ctl(int action, char *arg);
 char *prompt(char *custom_prompt, bool hidden);
 
 bool connected(data_t *data);
+bool not_connected(data_t *data);
 
 int exec_command(data_t *data, char *input);
 void send_command(data_t *data, char *fmt, ...);
@@ -98,6 +100,8 @@ int ftp_exit(data_t *data, size_t argc, char **argv);
 int ftp_help(data_t *data, size_t argc, char **argv);
 int ftp_lcd(data_t *data, size_t argc, char **argv);
 int ftp_list(data_t *data, size_t argc, char **argv);
+int ftp_llist(data_t *data, size_t argc, char **argv);
+int ftp_lpwd(data_t *data, size_t argc, char **argv);
 int ftp_mkdir(data_t *data, size_t argc, char **argv);
 int ftp_noop(data_t *data, size_t argc, char **argv);
 int ftp_open(data_t *data, size_t argc, char **argv);

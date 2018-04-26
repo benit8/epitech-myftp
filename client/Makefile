@@ -28,6 +28,8 @@ SOURCES	=	main.c			\
 		commands/help.c		\
 		commands/lcd.c		\
 		commands/list.c		\
+		commands/llist.c	\
+		commands/lpwd.c		\
 		commands/mkdir.c	\
 		commands/noop.c		\
 		commands/open.c		\

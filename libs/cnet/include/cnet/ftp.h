@@ -13,6 +13,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+typedef enum ftp_transfer_mode
+{
+	BINARY,
+	ASCII
+} ftp_transfer_mode_t;
+
 typedef enum ftp_status
 {
 	RESTART_MARKER_REPLY		= 110,

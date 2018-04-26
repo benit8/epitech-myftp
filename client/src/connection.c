@@ -9,7 +9,12 @@
 
 bool connected(data_t *data)
 {
-	bool c = tcp_socket_get_remote_address(data->control_socket) != IP_NONE;
+	return (tcp_socket_get_remote_address(data->control_socket) != IP_NONE);
+}
+
+bool not_connected(data_t *data)
+{
+	bool c = tcp_socket_get_remote_address(data->control_socket) == IP_NONE;
 
 	if (!c)
 		printf("Not connected.\n");

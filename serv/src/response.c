@@ -47,6 +47,6 @@ bool send_response(client_t *client, ftp_status_t status, char *fmt, ...)
 bool client_is_logged_in(client_t *client)
 {
 	if (!client->logged_in)
-		send_response(client, COMMAND_UNKNOWN, NULL);
+		send_response(client, NOT_LOGGED_IN, NULL);
 	return (client->logged_in);
 }

@@ -17,7 +17,7 @@ static char *make_command(size_t argc, char **argv)
 	cmd = calloc(length + 1, sizeof(char));
 	if (!cmd)
 		return (NULL);
-	strcat(cmd, "ls -l");
+	strcpy(cmd, "ls -l");
 	for (size_t i = 1; i < argc; ++i) {
 		strcat(cmd, " ");
 		strcat(cmd, argv[i]);
@@ -25,9 +25,9 @@ static char *make_command(size_t argc, char **argv)
 	return (cmd);
 }
 
-static FILE *get_process(client_t *client, size_t argc, char **argv)
+static file_t *get_process(client_t *client, size_t argc, char **argv)
 {
-	FILE *pp = NULL;
+	file_t *pp = NULL;
 	char *cmd = make_command(argc, argv);
 
 	if (!cmd) {
@@ -44,7 +44,7 @@ static FILE *get_process(client_t *client, size_t argc, char **argv)
 	return (pp);
 }
 
-static void send_output(client_t *client, FILE *pp)
+static void send_output(client_t *client, file_t *pp)
 {
 	socket_status_t s;
 	char buf[1];
@@ -63,7 +63,7 @@ static void send_output(client_t *client, FILE *pp)
 
 void list(client_t *client, size_t argc, char **argv)
 {
-	FILE *pp = NULL;
+	file_t *pp = NULL;
 
 	if (!client_is_logged_in(client))
 		return;

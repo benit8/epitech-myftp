@@ -21,6 +21,8 @@ const command_t commands[] = {
 	{"help", &ftp_help, "print local help information"},
 	{"lcd", &ftp_lcd, "change local working directory"},
 	{"list", &ftp_list, "list contents of remote directory"},
+	{"llist", &ftp_llist, "list contents of local directory"},
+	{"lpwd", &ftp_lpwd, "print working directory on local machine"},
 	{"mkdir", &ftp_mkdir, "make directory on the remote machine"},
 	{"noop", &ftp_noop, "keeps the connection alive"},
 	{"open", &ftp_open, "connect_to_remote_ftp"},
@@ -45,6 +47,7 @@ const pair_t aliases[] = {
 	{"get", "recv"},
 	{"image", "binary"},
 	{"ls", "list"},
+	{"lls", "llist"},
 	{"put", "send"},
 	{"quit", "exit"},
 	{NULL, NULL}

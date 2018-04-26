@@ -23,7 +23,7 @@ void dele(client_t *client, size_t argc, char **argv)
 		return;
 	}
 	if (unlink(argv[1]) == -1) {
-		send_response(client, FILE_ACTION_ABORTED, "%s: %s", argv[1],
+		send_response(client, FILE_UNAVAILABLE, "%s: %s", argv[1],
 			strerror(errno));
 		return;
 	}

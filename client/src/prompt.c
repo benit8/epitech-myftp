@@ -58,9 +58,8 @@ char *prompt(char *prompt, bool hidden)
 		printf("\n");
 	prompt_ctl(1, prompt_save);
 	if (r < 0) {
-		if (line)
-			free(line);
-		return (NULL);
+		free(line);
+		return (printf("\n") ? NULL : NULL);
 	}
 	line[strlen(line) - 1] = '\0';
 	return (line);

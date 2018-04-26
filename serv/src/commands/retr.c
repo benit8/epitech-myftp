@@ -35,13 +35,13 @@ void retr(client_t *client, size_t argc, char **argv)
 		send_response(client, PARAMETERS_UNKNOWN, "Usage: RETR file");
 		return;
 	}
-	if (!init_data_channel(client))
-		return;
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0 || (fstat(fd, &buf) == -1 || !S_ISREG(buf.st_mode))) {
 		send_response(client, FILE_UNAVAILABLE, "%s: %s", argv[1],
 			strerror(errno));
 		return;
 	}
+	if (!init_data_channel(client))
+		return;
 	close_data_channel(client, send_file(client, fd));
 }

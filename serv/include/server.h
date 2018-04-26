@@ -83,6 +83,8 @@ typedef struct pair
 	char *second;
 } pair_t;
 
+typedef FILE file_t;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 server_ressources_t *get_server_ressources(void);

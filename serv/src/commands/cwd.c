@@ -12,7 +12,7 @@ void cwd(client_t *client, size_t argc, char **argv)
 	if (!client_is_logged_in(client))
 		return;
 	if (argc < 2) {
-		send_response(client, PARAMETERS_UNKNOWN,
+		send_response(client, FILE_UNAVAILABLE,
 			"Usage: CWD directory");
 		return;
 	}
