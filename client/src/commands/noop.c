@@ -7,7 +7,9 @@
 
 #include "client.h"
 
-bool ftp_noop(data_t *data, size_t argc UNUSED, char **argv UNUSED)
+int ftp_noop(data_t *data, size_t argc UNUSED, char **argv UNUSED)
 {
-	send_command(data, "NOOP");return (false);
+	send_command(data, "NOOP");
+	response_wait(data, true);
+	return (1);
 }

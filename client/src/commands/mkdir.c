@@ -7,7 +7,7 @@
 
 #include "client.h"
 
-bool ftp_mkdir(data_t *data, size_t argc UNUSED, char **argv UNUSED)
+int ftp_mkdir(data_t *data UNUSED, size_t argc UNUSED, char **argv UNUSED)
 {
-	send_command(data, "NOOP");return (false);
+	return (0);
 }

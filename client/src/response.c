@@ -9,22 +9,23 @@
 
 static bool append(char **line_p, size_t *line_len_p, char *s, size_t n)
 {
-	char *line = NULL;
-	size_t line_len = *line_len_p;
-
 	if (n == 0) {
-		if (*line_p == NULL)
-			*line_p = calloc(1, sizeof(char));
-		return (true);
+		if (*line_p)
+			return (true);
+		*line_p = calloc(1, sizeof(char));
+		if (!(*line_p)) {
+			printf("out of memory\n");
+			return (false);
+		}
 	}
-	line = realloc(*line_p, (line_len + n + 1) * sizeof(char));
-	if (!line)
+	*line_p = realloc(*line_p, (*line_len_p + n + 1) * sizeof(char));
+	if (!(*line_p)) {
+		printf("out of memory\n");
 		return (false);
-	bzero(line + line_len, n + 1);
-	line_len += n;
-	strncat(line, s, n);
-	*line_p = line;
-	*line_len_p = line_len;
+	}
+	bzero(*line_p + *line_len_p, n + 1);
+	*line_len_p += n;
+	strncat(*line_p, s, n);
 	return (true);
 }
 
@@ -65,32 +66,25 @@ static char *get_raw_response(data_t *data)
 	}
 }
 
-response_t *get_response(data_t *data)
+response_t *response_get(data_t *data)
 {
-	response_t *res = NULL;
-	char *raw = get_raw_response(data);
-	char *r = raw;
+	response_t *res = calloc(1, sizeof(response_t));
+	char *r = NULL;
 
-	if (!raw)
+	if (!res)
 		return (NULL);
-	res = calloc(1, sizeof(response_t));
-	if (!res) {
-		free(raw);
-		return (NULL);
-	}
-	res->code = strtol(raw, &r, 10);
-	res->message = strdup(r);
-	if (!res->message) {
+	res->raw = get_raw_response(data);
+	if (!res->raw) {
 		free(res);
-		free(raw);
 		return (NULL);
 	}
-	res->message = str_trim(res->message);
+	res->code = strtol(res->raw, &r, 10);
+	res->message = str_trim(r);
 	return (res);
 }
 
 void response_destroy(response_t *res)
 {
-	free(res->message);
+	free(res->raw);
 	free(res);
 }

@@ -31,6 +31,7 @@ const command_t commands[] = {
 	{"rename", &ftp_rename, "rename file"},
 	{"rmdir", &ftp_rmdir, "remove directory on the remove machine"},
 	{"send", &ftp_send, "send one file"},
+	{"user", &ftp_user, "send new user information"},
 	{NULL, NULL, NULL}
 };
 
@@ -49,6 +50,8 @@ const pair_t aliases[] = {
 	{NULL, NULL}
 };
 
+const size_t alias_count = sizeof(aliases) / sizeof(*aliases);
+
 static size_t find_command(char *cmd)
 {
 	for (size_t i = 0; aliases[i].first; ++i) {
@@ -66,7 +69,7 @@ static size_t find_command(char *cmd)
 
 int exec_command(data_t *data, char *input)
 {
-	bool done = false;
+	int ret = 0;
 	char **argv = NULL;
 	size_t argc = 0;
 	size_t i = 0;
@@ -77,21 +80,29 @@ int exec_command(data_t *data, char *input)
 		return (-1);
 	for (argc = 0; argv[argc]; ++argc);
 	i = find_command(argv[0]);
-	if (i == (size_t)-1)
-		printf("%s: Invalid command\n", argv[0]);
+	if (i != (size_t)-1)
+		ret = (commands[i].func)(data, argc, argv);
 	else
-		done = (commands[i].func)(data, argc, argv);
+		printf("%s: Invalid command\n", argv[0]);
 	for (size_t i = 0; argv[i] != NULL; ++i)
 		free(argv[i]);
 	free(argv);
-	return ((int)done);
+	return (ret);
 }
 
 void send_command(data_t *data, char *fmt, ...)
 {
 	va_list ap;
+	va_list ap_dbg;
 
 	va_start(ap, fmt);
+	if (data->debug > 0) {
+		va_copy(ap_dbg, ap);
+		printf("---> ");
+		vprintf(fmt, ap_dbg);
+		printf("\n");
+		va_end(ap_dbg);
+	}
 	vdprintf(data->control_socket->handle, fmt, ap);
 	dprintf(data->control_socket->handle, "\r\n");
 	va_end(ap);

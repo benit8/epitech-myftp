@@ -7,7 +7,9 @@
 
 #include "client.h"
 
-bool ftp_passive(data_t *data, size_t argc UNUSED, char **argv UNUSED)
+int ftp_passive(data_t *data, size_t argc UNUSED, char **argv UNUSED)
 {
-	send_command(data, "NOOP");return (false);
+	data->passive = !data->passive;
+	printf("Passive mode %s\n", data->passive ? "on" : "off");
+	return (1);
 }

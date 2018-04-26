@@ -42,6 +42,7 @@ Regex	=	regex/capture.c			\
 		regex/split.c
 
 String	=	string/explode.c		\
+		string/implode.c		\
 		string/str_empty.c		\
 		string/str_trim.c
 

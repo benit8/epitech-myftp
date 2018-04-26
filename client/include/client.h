@@ -47,12 +47,13 @@ typedef struct data
 	unsigned short data_port;
 
 	bool passive;
+	int debug;
 } data_t;
 
 typedef struct command
 {
 	char *name;
-	bool (*func)(data_t *, size_t, char **);
+	int (*func)(data_t *, size_t, char **);
 	char *help;
 } command_t;
 
@@ -60,6 +61,7 @@ typedef struct response
 {
 	int code;
 	char *message;
+	char *raw;
 } response_t;
 
 typedef struct pair
@@ -70,39 +72,47 @@ typedef struct pair
 
 ////////////////////////////////////////////////////////////////////////////////
 
-char *prompt(char *custom_prompt);
+char *prompt_ctl(int action, char *arg);
+char *prompt(char *custom_prompt, bool hidden);
+
+bool connected(data_t *data);
 
 int exec_command(data_t *data, char *input);
 void send_command(data_t *data, char *fmt, ...);
 
-response_t *get_response(data_t *data);
+response_t *response_get(data_t *data);
 void response_destroy(response_t *res);
+void response_display(response_t *res);
+int response_wait(data_t *data, bool display);
+char *response_get_quoted(response_t *res);
 
-bool ftp_append(data_t *data, size_t argc, char **argv);
-bool ftp_ascii(data_t *data, size_t argc, char **argv);
-bool ftp_binary(data_t *data, size_t argc, char **argv);
-bool ftp_cd(data_t *data, size_t argc, char **argv);
-bool ftp_cdup(data_t *data, size_t argc, char **argv);
-bool ftp_debug(data_t *data, size_t argc, char **argv);
-bool ftp_delete(data_t *data, size_t argc, char **argv);
-bool ftp_disconnect(data_t *data, size_t argc, char **argv);
-bool ftp_exit(data_t *data, size_t argc, char **argv);
-bool ftp_help(data_t *data, size_t argc, char **argv);
-bool ftp_lcd(data_t *data, size_t argc, char **argv);
-bool ftp_list(data_t *data, size_t argc, char **argv);
-bool ftp_mkdir(data_t *data, size_t argc, char **argv);
-bool ftp_noop(data_t *data, size_t argc, char **argv);
-bool ftp_open(data_t *data, size_t argc, char **argv);
-bool ftp_passive(data_t *data, size_t argc, char **argv);
-bool ftp_pwd(data_t *data, size_t argc, char **argv);
-bool ftp_quote(data_t *data, size_t argc, char **argv);
-bool ftp_recv(data_t *data, size_t argc, char **argv);
-bool ftp_rename(data_t *data, size_t argc, char **argv);
-bool ftp_rmdir(data_t *data, size_t argc, char **argv);
-bool ftp_send(data_t *data, size_t argc, char **argv);
+int ftp_append(data_t *data, size_t argc, char **argv);
+int ftp_ascii(data_t *data, size_t argc, char **argv);
+int ftp_binary(data_t *data, size_t argc, char **argv);
+int ftp_cd(data_t *data, size_t argc, char **argv);
+int ftp_cdup(data_t *data, size_t argc, char **argv);
+int ftp_debug(data_t *data, size_t argc, char **argv);
+int ftp_delete(data_t *data, size_t argc, char **argv);
+int ftp_disconnect(data_t *data, size_t argc, char **argv);
+int ftp_exit(data_t *data, size_t argc, char **argv);
+int ftp_help(data_t *data, size_t argc, char **argv);
+int ftp_lcd(data_t *data, size_t argc, char **argv);
+int ftp_list(data_t *data, size_t argc, char **argv);
+int ftp_mkdir(data_t *data, size_t argc, char **argv);
+int ftp_noop(data_t *data, size_t argc, char **argv);
+int ftp_open(data_t *data, size_t argc, char **argv);
+int ftp_passive(data_t *data, size_t argc, char **argv);
+int ftp_pwd(data_t *data, size_t argc, char **argv);
+int ftp_quote(data_t *data, size_t argc, char **argv);
+int ftp_recv(data_t *data, size_t argc, char **argv);
+int ftp_rename(data_t *data, size_t argc, char **argv);
+int ftp_rmdir(data_t *data, size_t argc, char **argv);
+int ftp_send(data_t *data, size_t argc, char **argv);
+int ftp_user(data_t *data, size_t argc, char **argv);
 
 ////////////////////////////////////////////////////////////////////////////////
 
 extern const command_t commands[];
 extern const size_t command_count;
 extern const pair_t aliases[];
+extern const size_t alias_count;

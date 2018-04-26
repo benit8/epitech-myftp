@@ -17,5 +17,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 char **explode(char *string, const char *delim);
+char *implode(char **array, const char *glue);
 bool str_empty(const char *string);
 char *str_trim(char *str);

@@ -12,8 +12,10 @@ SRC_DIR	=	src/
 
 SOURCES	=	main.c			\
 		commands.c		\
+		connection.c		\
 		prompt.c		\
 		response.c		\
+		response_utils.c	\
 		commands/append.c	\
 		commands/ascii.c	\
 		commands/binary.c	\
@@ -35,7 +37,8 @@ SOURCES	=	main.c			\
 		commands/recv.c		\
 		commands/rename.c	\
 		commands/rmdir.c	\
-		commands/send.c
+		commands/send.c		\
+		commands/user.c
 
 SRCS	=	$(addprefix $(SRC_DIR),$(SOURCES))
 OBJS	=	$(SRCS:.c=.o)

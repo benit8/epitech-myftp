@@ -9,7 +9,18 @@
 
 static void sighandler(int signum UNUSED)
 {
-	printf("\n%s ", DEFAULT_PROMPT);
+	char *prmpt = prompt_ctl(0, NULL);
+
+	write(1, "\n", 1);
+	write(1, prmpt, strlen(prmpt));
+	write(1, " ", 1);
+}
+
+static void destroy(data_t *data)
+{
+	tcp_socket_destroy(data->control_socket);
+	tcp_listener_destroy(data->data_listener);
+	tcp_socket_destroy(data->data_socket);
 }
 
 static int loop(data_t *data)
@@ -18,18 +29,20 @@ static int loop(data_t *data)
 	int ret = 0;
 
 	while (1) {
-		input = prompt(NULL);
+		input = prompt(NULL, false);
 		if (!input)
 			break;
-		if (str_empty(input))
+		if (str_empty(input)) {
+			free(input);
 			continue;
+		}
 		ret = exec_command(data, input);
-		if (ret < 0)
-			break;
 		free(input);
+		if (ret <= 0)
+			break;
 	}
-	printf("Bye\n");
-	return (ret >= 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+	destroy(data);
+	return (ret >= 0 ? EXIT_SUCCESS : 84);
 }
 
 static int launch(data_t *data, int argc, char **argv)
@@ -37,12 +50,12 @@ static int launch(data_t *data, int argc, char **argv)
 	char **parts = NULL;
 
 	if (argc > 1) {
-		parts = calloc(4, sizeof(char *));
+		parts = alloca(3 * sizeof(char *));
 		parts[0] = "open";
 		parts[1] = argv[1];
 		parts[2] = argc > 2 ? argv[2] : "21";
-		ftp_open(data, 3, parts);
-		free(parts);
+		if (ftp_open(data, 3, parts) < 0)
+			return (84);
 	}
 	return (loop(data));
 }
