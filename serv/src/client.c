@@ -39,6 +39,7 @@ void client_loop(client_t *client)
 			break;
 		if (str_empty(input)) {
 			unknown_command(client, 0, NULL);
+			free(input);
 			continue;
 		}
 #ifdef DEBUG

@@ -7,7 +7,8 @@
 
 #include "client.h"
 
-int ftp_pwd(data_t *data UNUSED, size_t argc UNUSED, char **argv UNUSED)
+int ftp_pwd(data_t *data, size_t argc UNUSED, char **argv UNUSED)
 {
-	return (0);
+	send_command(data, "PWD");
+	return (response_wait(data, true));
 }

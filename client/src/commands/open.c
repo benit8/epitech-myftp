@@ -9,7 +9,7 @@
 
 static int send_pass_command(data_t *data, response_t *res)
 {
-	char *pass;
+	char *pass = NULL;
 
 	if (res->code >= 400) {
 		response_destroy(res);
@@ -72,17 +72,14 @@ static int wait_for_response(data_t *data, char *to)
 static int try_connecting(data_t *data, size_t argc, char **argv, char *to)
 {
 	data->control_ip = ip_address_from_string(to);
-	if (data->control_ip == IP_NONE) {
-		printf("%s: Name or service unknown\n", to);
-		return (2);
-	}
+	if (data->control_ip == IP_NONE)
+		return (printf("%s: Name or service unknown\n", to) ? 2 : 2);
 	data->control_port = (argc > 2) ? atoi(argv[2]) : 21;
 	if (tcp_socket_connect(data->control_socket, data->control_ip,
 		data->control_port) != SOCKET_DONE) {
-		printf("connect: Connection refused\n");
 		data->control_ip = IP_NONE;
 		data->control_port = 0;
-		return (2);
+		return (printf("connect: Connection refused\n") ? 2 : 2);
 	}
 	return (wait_for_response(data, to));
 }

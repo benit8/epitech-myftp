@@ -72,7 +72,7 @@ static size_t find_command(char *cmd)
 
 int exec_command(data_t *data, char *input)
 {
-	int ret = 0;
+	int ret = 2;
 	char **argv = NULL;
 	size_t argc = 0;
 	size_t i = 0;
@@ -96,17 +96,14 @@ int exec_command(data_t *data, char *input)
 void send_command(data_t *data, char *fmt, ...)
 {
 	va_list ap;
-	va_list ap_dbg;
+	char *cmd = NULL;
 
 	va_start(ap, fmt);
-	if (data->debug > 0) {
-		va_copy(ap_dbg, ap);
-		printf("---> ");
-		vprintf(fmt, ap_dbg);
-		printf("\n");
-		va_end(ap_dbg);
-	}
-	vdprintf(data->control_socket->handle, fmt, ap);
-	dprintf(data->control_socket->handle, "\r\n");
+	vasprintf(&cmd, fmt, ap);
 	va_end(ap);
+	if (data->debug > 0)
+		printf("---> %s\n", cmd);
+	tcp_socket_send(data->control_socket, cmd, strlen(cmd));
+	tcp_socket_send(data->control_socket, "\r\n", 2);
+	free(cmd);
 }

@@ -33,18 +33,19 @@ static bool refill(data_t *data, char *buff, size_t *size, size_t *off)
 {
 	socket_status_t s;
 
-	s = tcp_socket_receive(data->control_socket, buff, 1024, size);
+	*off = 0;
+	bzero(buff, 128);
+	s = tcp_socket_receive(data->control_socket, buff, 128, size);
 	if (s == SOCKET_DISCONNECTED)
 		return (false);
 	else if (s == SOCKET_ERROR)
 		return (false);
-	*off = 0;
 	return (true);
 }
 
 static char *get_raw_response(data_t *data)
 {
-	static char buff[1024];
+	static char buff[128];
 	static size_t size = 0;
 	static size_t off = 0;
 	char *input = NULL;

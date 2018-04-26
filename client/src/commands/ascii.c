@@ -7,7 +7,18 @@
 
 #include "client.h"
 
-int ftp_ascii(data_t *data UNUSED, size_t argc UNUSED, char **argv UNUSED)
+int ftp_ascii(data_t *data, size_t argc UNUSED, char **argv UNUSED)
 {
-	return (0);
+	response_t *res = NULL;
+	bool ok = false;
+
+	if (not_connected(data))
+		return (2);
+	send_command(data, "TYPE A");
+	res = response_get(data);
+	ok = (res->code < 400);
+	response_display(res);
+	response_destroy(res);
+	data->transfer_mode = ok ? ASCII : data->transfer_mode;
+	return (ok ? 1 : 2);
 }
