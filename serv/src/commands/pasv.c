@@ -7,7 +7,7 @@
 
 #include "server.h"
 
-static char *make_infos(client_t* client)
+static char *make_infos(client_t *client)
 {
 	char *infos = NULL;
 	char *ip = NULL;
