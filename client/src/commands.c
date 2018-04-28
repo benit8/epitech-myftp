@@ -93,17 +93,23 @@ int exec_command(data_t *data, char *input)
 	return (ret);
 }
 
-void send_command(data_t *data, char *fmt, ...)
+bool send_command(data_t *data, char *fmt, ...)
 {
+	socket_status_t s;
 	va_list ap;
 	char *cmd = NULL;
+	char *f = NULL;
 
 	va_start(ap, fmt);
-	vasprintf(&cmd, fmt, ap);
+	asprintf(&f, "%s\r\n", fmt);
+	vasprintf(&cmd, f, ap);
 	va_end(ap);
 	if (data->debug > 0)
 		printf("---> %s\n", cmd);
-	tcp_socket_send(data->control_socket, cmd, strlen(cmd));
-	tcp_socket_send(data->control_socket, "\r\n", 2);
+	s = tcp_socket_send(data->control_socket, cmd, strlen(cmd));
 	free(cmd);
+	free(f);
+	if (s == SOCKET_DISCONNECTED)
+		printf("421 Service not available\n");
+	return (s == SOCKET_DONE);
 }

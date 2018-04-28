@@ -16,7 +16,9 @@ SOURCES	=	main.c			\
 		prompt.c		\
 		response.c		\
 		response_utils.c	\
-		commands/append.c	\
+		data_channel/general.c	\
+		data_channel/passive.c	\
+		data_channel/active.c	\
 		commands/ascii.c	\
 		commands/binary.c	\
 		commands/cd.c		\

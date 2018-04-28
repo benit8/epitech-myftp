@@ -36,12 +36,3 @@ char *response_get_quoted(response_t *res)
 	for (size = 0; start[size] && start[size] != '"'; ++size);
 	return (strndup(start, size));
 }
-
-/*
-ip_address_t response_get_ip_address(response_t *res)
-{
-	char **matches = NULL;
-
-	if ()
-}
-*/

@@ -41,8 +41,7 @@ void pasv(client_t *client, size_t argc UNUSED, char **argv UNUSED)
 		"Entering passive mode (%s)", infos);
 	free(infos);
 	s = tcp_listener_accept(client->data_listener, &client->data_socket);
-	if (s != SOCKET_DONE) {
+	if (s != SOCKET_DONE)
 		send_response(client, DATA_CONNECTION_UNAVAILABLE, NULL);
-		tcp_listener_close(client->data_listener);
-	}
+	tcp_listener_close(client->data_listener);
 }

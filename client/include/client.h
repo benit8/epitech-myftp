@@ -33,6 +33,8 @@
 
 #define DEFAULT_PROMPT "myftp>"
 
+#define REGEX_IPPORT "(([0-9]{1,3}),){5}([0-9]{1,3})"
+
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef struct data
@@ -79,8 +81,14 @@ char *prompt(char *custom_prompt, bool hidden);
 bool connected(data_t *data);
 bool not_connected(data_t *data);
 
+int init_data_channel(data_t *data);
+int init_data_channel_passive(data_t *data);
+int init_data_channel_active(data_t *data);
+int connect_data_channel(data_t *data);
+void close_data_channel(data_t *data);
+
 int exec_command(data_t *data, char *input);
-void send_command(data_t *data, char *fmt, ...);
+bool send_command(data_t *data, char *fmt, ...);
 
 response_t *response_get(data_t *data);
 void response_destroy(response_t *res);

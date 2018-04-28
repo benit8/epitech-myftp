@@ -57,7 +57,8 @@ int ftp_user(data_t *data, size_t argc, char **argv)
 		if (!username)
 			return (2);
 		else if (str_empty(username)) {
-			printf("usage: user username [password]\n");
+			printf("usage: %s username [password]\n", argv[0]);
+			free(username);
 			return (2);
 		}
 	}

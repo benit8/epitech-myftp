@@ -50,12 +50,13 @@ static int launch(data_t *data, int argc, char **argv)
 	char **parts = NULL;
 
 	if (argc > 1) {
-		parts = alloca(3 * sizeof(char *));
+		parts = calloc(3, sizeof(char *));
 		parts[0] = "open";
 		parts[1] = argv[1];
 		parts[2] = argc > 2 ? argv[2] : "21";
 		if (ftp_open(data, 3, parts) < 0)
 			return (84);
+		free(parts);
 	}
 	return (loop(data));
 }

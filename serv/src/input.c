@@ -9,22 +9,23 @@
 
 static bool append(char **line_p, size_t *line_len_p, char *s, size_t n)
 {
-	char *line = NULL;
-	size_t line_len = *line_len_p;
-
 	if (n == 0) {
-		if (*line_p == NULL)
-			*line_p = calloc(1, sizeof(char));
-		return (true);
+		if (*line_p)
+			return (true);
+		*line_p = calloc(1, sizeof(char));
+		if (!(*line_p)) {
+			fprintf(stderr, "out of memory\n");
+			return (false);
+		}
 	}
-	line = realloc(*line_p, (line_len + n + 1) * sizeof(char));
-	if (!line)
+	*line_p = realloc(*line_p, (*line_len_p + n + 1) * sizeof(char));
+	if (!(*line_p)) {
+		printf("out of memory\n");
 		return (false);
-	bzero(line + line_len, n + 1);
-	line_len += n;
-	strncat(line, s, n);
-	*line_p = line;
-	*line_len_p = line_len;
+	}
+	bzero(*line_p + *line_len_p, n + 1);
+	*line_len_p += n;
+	strncat(*line_p, s, n);
 	return (true);
 }
 

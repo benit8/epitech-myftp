@@ -101,7 +101,7 @@ int ftp_open(data_t *data, size_t argc, char **argv)
 		if (!to)
 			return (2);
 		else if (str_empty(to)) {
-			printf("\nusage: open host-name [port]\n");
+			printf("usage: %s host-name [port]\n", argv[0]);
 			return (2);
 		}
 	}
