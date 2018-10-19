@@ -9,22 +9,23 @@
 
 static bool append(char **line_p, size_t *line_len_p, char *s, size_t n)
 {
-	char *line = NULL;
-	size_t line_len = *line_len_p;
-
 	if (n == 0) {
-		if (*line_p == NULL)
-			*line_p = calloc(1, sizeof(char));
-		return (true);
+		if (*line_p)
+			return (true);
+		*line_p = calloc(1, sizeof(char));
+		if (!(*line_p)) {
+			fprintf(stderr, "out of memory\n");
+			return (false);
+		}
 	}
-	line = realloc(*line_p, (line_len + n + 1) * sizeof(char));
-	if (!line)
+	*line_p = realloc(*line_p, (*line_len_p + n + 1) * sizeof(char));
+	if (!(*line_p)) {
+		printf("out of memory\n");
 		return (false);
-	bzero(line + line_len, n + 1);
-	line_len += n;
-	strncat(line, s, n);
-	*line_p = line;
-	*line_len_p = line_len;
+	}
+	bzero(*line_p + *line_len_p, n + 1);
+	*line_len_p += n;
+	strncat(*line_p, s, n);
 	return (true);
 }
 
@@ -68,22 +69,21 @@ char *get_input(client_t *client)
 
 void parse_input(char *input, client_t *client)
 {
-	bool done = false;
 	char **argv;
 	size_t argc = 0;
+	size_t i = 0;
 
 	input = str_trim(input);
 	argv = explode(input, " ");
 	if (!argv)
 		return;
 	for (argc = 0; argv[argc]; ++argc);
-	for (size_t i = 0; commands[i].name != NULL && !done; ++i) {
-		if (strcasecmp(commands[i].name, argv[0]) == 0) {
-			(commands[i].func)(client, argc, argv);
-			done = true;
-		}
-	}
-	if (!done)
+	for (i = 0; commands[i].name != NULL; ++i)
+		if (strcasecmp(commands[i].name, argv[0]) == 0)
+			break;
+	if (commands[i].name != NULL)
+		(commands[i].func)(client, argc, argv);
+	else
 		unknown_command(client, argc, argv);
 	strcpy(client->last_command, argv[0]);
 	for (size_t i = 0; argv[i] != NULL; ++i)

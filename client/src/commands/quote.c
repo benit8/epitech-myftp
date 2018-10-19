@@ -20,7 +20,8 @@ int ftp_quote(data_t *data, size_t argc, char **argv)
 		if (!cmd)
 			return (2);
 		else if (str_empty(cmd)) {
-			printf("\nusage: quote line-to-send\n");
+			printf("usage: %s line-to-send\n", argv[0]);
+			free(cmd);
 			return (2);
 		}
 	}

@@ -9,22 +9,23 @@
 
 int ftp_cd(data_t *data, size_t argc, char **argv)
 {
-	char *cmd = NULL;
+	char *dirname = NULL;
 
 	if (!connected(data))
 		return (2);
 	if (argc > 1)
-		cmd = strdup(argv[1]);
+		dirname = strdup(argv[1]);
 	else {
-		cmd = prompt("(remote-directory)", false);
-		if (!cmd)
+		dirname = prompt("(remote-directory)", false);
+		if (!dirname)
 			return (2);
-		else if (str_empty(cmd)) {
-			printf("\nusage: cd remote-directory\n");
+		else if (str_empty(dirname)) {
+			printf("usage: %s remote-directory\n", argv[0]);
+			free(dirname);
 			return (2);
 		}
 	}
-	send_command(data, "CWD %s", cmd);
-	free(cmd);
+	send_command(data, "CWD %s", dirname);
+	free(dirname);
 	return (response_wait(data, true));
 }

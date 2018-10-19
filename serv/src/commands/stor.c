@@ -51,7 +51,7 @@ void stor(client_t *client, size_t argc, char **argv)
 	}
 	if (!init_data_channel(client))
 		return;
-	int fd = open(argv[1], O_WRONLY | O_CREAT, 644);
+	int fd = open(argv[1], O_WRONLY | O_CREAT, 0644);
 	if (fd < 0) {
 		send_response(client, FILE_UNAVAILABLE, "%s: %s", argv[1],
 			strerror(errno));

@@ -14,13 +14,13 @@ static bool append(char **line_p, size_t *line_len_p, char *s, size_t n)
 			return (true);
 		*line_p = calloc(1, sizeof(char));
 		if (!(*line_p)) {
-			printf("out of memory\n");
+			fprintf(stderr, "out of memory\n");
 			return (false);
 		}
 	}
 	*line_p = realloc(*line_p, (*line_len_p + n + 1) * sizeof(char));
 	if (!(*line_p)) {
-		printf("out of memory\n");
+		fprintf(stderr, "out of memory\n");
 		return (false);
 	}
 	bzero(*line_p + *line_len_p, n + 1);
@@ -36,9 +36,11 @@ static bool refill(data_t *data, char *buff, size_t *size, size_t *off)
 	*off = 0;
 	bzero(buff, 128);
 	s = tcp_socket_receive(data->control_socket, buff, 128, size);
-	if (s == SOCKET_DISCONNECTED)
+	if (s == SOCKET_DISCONNECTED) {
+		fprintf(stderr, "421 Service not available\n");
 		return (false);
-	else if (s == SOCKET_ERROR)
+	}
+	else if (s != SOCKET_DONE)
 		return (false);
 	return (true);
 }
