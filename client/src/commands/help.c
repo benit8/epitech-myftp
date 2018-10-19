@@ -9,19 +9,9 @@
 
 static int print_all_commands(void)
 {
-	size_t i = 0;
-	size_t j = 0;
-
 	printf("Commands are:\n");
-	while (!(commands[i].name == NULL && aliases[j].first == NULL)) {
-		if (!commands[i].name)
-			printf("%s\n", aliases[j++].first);
-		else if (!aliases[j].first)
-			printf("%s\n", commands[i++].name);
-		if (!aliases[j].first ||
-			strcmp(commands[i].name, aliases[j].first) < 0) {
-			printf("%s\n", commands[i++].name);
-		}
+	for (size_t i = 0; commands[i].name; ++i) {
+		printf("%s\n", commands[i].name);
 	}
 	return (1);
 }
